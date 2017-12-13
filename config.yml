@@ -1,0 +1,10 @@
+cgrates:
+  apier_url: http://cgrates.example.com
+  cgr_event_id: 'MY_ID'
+  user: 'base_auth_user'
+  token: 'secret_token'
+
+freeswitch:
+  host: localhost
+  port: 8021
+  auth: ClueCon
