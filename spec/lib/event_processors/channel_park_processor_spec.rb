@@ -35,12 +35,12 @@ describe EventProcessors::ChannelParkProcessor do
         let(:event) do
           event_struct.new({
               event_name: event_name,
-              'Event-Date-Timestamp': '2017',
-              'Caller-Destination-Number': '123',
-              cgr_account: '1001',
-              cgr_subject: 'EU',
-              cgr_tenant: 'cgrates.org',
-              cgr_reqtype: '*prepaid'
+              event_date_timestamp: '2017',
+              caller_destination_number: '123',
+              variable_cgr_account: '1001',
+              variable_cgr_subject: 'EU',
+              variable_cgr_tenant: 'cgrates.org',
+              variable_cgr_reqtype: '*prepaid'
           })
         end
 

@@ -12,20 +12,21 @@ module EventProcessors
     private
     def can_process?(event)
       event.content[:event_name] == :CHANNEL_PARK &&
-        [:cgr_account, :cgr_subject].map { |n| !event.content[n].nil? && event.content[n] != '' }.reduce(:&)
+        [:variable_cgr_account,
+         :variable_cgr_subject].map { |n| !event.content[n].nil? && event.content[n] != '' }.reduce(:&)
     end
 
     def build_cgrates_params(event)
       [
         {
           'ID' => Config.instance.cgr_event_id,
-          'Tenant' => event.content[:cgr_tenant],
+          'Tenant' => event.content[:variable_cgr_tenant],
           'Event': {
-            'Account'     => event.content[:cgr_account],
-            'Destination' => event.content[:'Caller-Destination-Number'],
-            'Subject'     => event.content[:cgr_subject],
+            'Account'     => event.content[:variable_cgr_account],
+            'Destination' => event.content[:caller_destination_number],
+            'Subject'     => event.content[:variable_cgr_subject],
             'Category'    => 'call',
-            'AnswerTime'  => event.content[:'Event-Date-Timestamp'],
+            'AnswerTime'  => event.content[:event_date_timestamp],
             'Usage': '1',
           },
         }
