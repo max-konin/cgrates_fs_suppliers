@@ -9,6 +9,7 @@
 * install bundler `gem install bundler`
 * clone this repo
 * in repo dir: `bundle install --without development test --deployment --quiet`
+* edit `config.yml'
 
 ## Run
 
