@@ -29,7 +29,7 @@ class CgratesApierAdapter
   end
 
   def need_base_auth?
-    !(config.cgrates_user.nil? || config.cgrates_user != '')
+    !config.cgrates_user.nil?
   end
 
   def headers
