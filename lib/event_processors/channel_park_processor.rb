@@ -1,10 +1,20 @@
 require_relative '../cgrates_apier_adapter'
+require 'logger'
 
 module EventProcessors
   class ChannelParkProcessor
+    attr_reader :logger
+
+    def initialize(logger = Logger.new)
+      @logger = logger
+    end
+
     def process(event)
       if can_process? event
-        res = CgratesApierAdapter.new.execute method: 'SupplierSv1.GetSuppliers' , params: build_cgrates_params(event)
+        params = build_cgrates_params(event)
+        logger.info "Send request to CGRates with params #{params}"
+        res = CgratesApierAdapter.new.execute method: 'SupplierSv1.GetSuppliers' , params: params
+        logger.info "CGrates response: status #{res.status}, body = #{res.body}"
         res.body
       end
     end

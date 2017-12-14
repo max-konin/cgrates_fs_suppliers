@@ -7,7 +7,7 @@ class InboundEventSocketListener < FSR::Listener::Inbound
   def before_session
     add_event(:CHANNEL_PARK) do |event|
       FSR::Log.info "*** Process CHANNEL_PARK event ***"
-      res = EventProcessors::ChannelParkProcessor.new.process event
+      res = EventProcessors::ChannelParkProcessor.new(FSR::Log).process event
       FSR::Log.info "Response: #{res}"
       FSR::Log.info "*** End CHANNEL_PARK event ***"
     end
