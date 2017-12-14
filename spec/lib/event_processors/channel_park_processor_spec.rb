@@ -10,7 +10,7 @@ describe EventProcessors::ChannelParkProcessor do
 
     before do
       stub_request(:post, cgrates_endpoint).and_return(body: {
-          result: [
+          result: {
             'ProfileID' => 1,
             'Sorting' => :asc,
             'SortedSuppliers' => [
@@ -26,7 +26,7 @@ describe EventProcessors::ChannelParkProcessor do
                 "SortingData"=>{"Cost"=>0.191, "RatingPlanID"=>"RP_SPEEDFLOW_INT", "Weight"=>10}
               }
             ]
-          ]
+          }
       }.to_json)
       config.load()
     end

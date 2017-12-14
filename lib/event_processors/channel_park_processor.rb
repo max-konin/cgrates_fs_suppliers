@@ -25,7 +25,7 @@ module EventProcessors
 
     private
     def process_cgaretes_response(event, res)
-      suppls = res.body['result'].first['SortedSuppliers'].map { |s| s['SupplierID'] }
+      suppls = res.body['result']['SortedSuppliers'].map { |s| s['SupplierID'] }
       channel_call_uuid = event.content[:channel_call_uuid]
       "uuid_setvar #{channel_call_uuid} cgr_suppliers ARRAY::#{suppls.size}|:#{suppls.join '|:'}"
     rescue => e
