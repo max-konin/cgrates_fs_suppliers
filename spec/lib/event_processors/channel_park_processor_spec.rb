@@ -13,7 +13,19 @@ describe EventProcessors::ChannelParkProcessor do
           result: [
             'ProfileID' => 1,
             'Sorting' => :asc,
-            'SortedSuppliers' => [:hansa, :telux]
+            'SortedSuppliers' => [
+              {
+                "SupplierID"=>"hansa",
+                "SortingData"=>{"Cost"=>0.178, "RatingPlanID"=>"RP_HANSA", "Weight"=>10}
+              },
+              {
+                "SupplierID"=>"nordconnect_eu",
+                "SortingData"=>{"Cost"=>0.1828, "RatingPlanID"=>"RP_Nordconnect_EU", "Weight"=>10}},
+              {
+                "SupplierID"=>"speedflow_int",
+                "SortingData"=>{"Cost"=>0.191, "RatingPlanID"=>"RP_SPEEDFLOW_INT", "Weight"=>10}
+              }
+            ]
           ]
       }.to_json)
       config.load()
@@ -22,13 +34,7 @@ describe EventProcessors::ChannelParkProcessor do
     context 'when event name is "CHANNEL_PARK"' do
       let(:event_name) { :CHANNEL_PARK }
       let(:expected_response) do
-        {
-          'result' => [
-            'ProfileID' => 1,
-            'Sorting' => 'asc',
-            'SortedSuppliers' => ['hansa', 'telux']
-          ]
-        }
+        ["cgr_supplier=hansa", "cgr_supplier=nordconnect_eu", "cgr_supplier=speedflow_int"]
       end
 
       context 'when event has "cgr_account" & "cgr_subject"' do
