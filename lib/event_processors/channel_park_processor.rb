@@ -12,15 +12,15 @@ module EventProcessors
     def process(event)
       if can_process? event
         logger.info 'Start processing CHANNEL_PARK event'
-	params = build_cgrates_params(event)
+        params = build_cgrates_params(event)
         logger.info "Send request to CGRates with params #{params}"
         res = CgratesApierAdapter.new.execute method: 'SupplierSv1.GetSuppliers' , params: params
         logger.info "CGrates response: status #{res.status}, body = #{res.body}"
         res.body
-      else 
+      else
         logger.info 'Can not process CHANNEL_PARK event'
         false
-      end
+      end      
     end
 
     private
