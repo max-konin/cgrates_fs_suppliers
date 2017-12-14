@@ -25,16 +25,11 @@ module EventProcessors
 
     private
     def process_cgaretes_response(event, res)
-      return nil if incorrect_response?(res)
       suppls = res.body['result'].first['SortedSuppliers'].map { |s| s['SupplierID'] }
       channel_call_uuid = event.content[:channel_call_uuid]
       "uuid_setvar #{channel_call_uuid} cgr_suppliers ARRAY::#{suppls.size}|:#{suppls.join '|:'}"
-    end
-
-    def incorrect_response?(res)
-      result = res.body['result']
-      !(res.body['result'].is_a?(Array) && res.body['result'].first.is_a?(Hash) &&
-          res.body['result'].first['SortedSuppliers'].is_a?(Array))
+    rescue => e
+      logger.error e.inspect
     end
 
     def can_process?(event)
