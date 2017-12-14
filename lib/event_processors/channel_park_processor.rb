@@ -16,7 +16,7 @@ module EventProcessors
         logger.info "Send request to CGRates with params #{params}"
         res = CgratesApierAdapter.new.execute method: 'SupplierSv1.GetSuppliers' , params: params
         logger.info "CGrates response: status #{res.status}, body = #{res.body}"
-        process_cgaretes_response res
+        process_cgaretes_response event, res
       else
         logger.info 'Can not process CHANNEL_PARK event'
         false
@@ -24,9 +24,11 @@ module EventProcessors
     end
 
     private
-    def process_cgaretes_response(res)
+    def process_cgaretes_response(event, res)
       return nil if incorrect_response?(res)
-      res.body['result'].first['SortedSuppliers'].map { |s| "cgr_supplier=#{s['SupplierID']}"}
+      suppls = res.body['result'].first['SortedSuppliers'].map { |s| s['SupplierID'] }
+      channel_call_uuid = event.content[:channel_call_uuid]
+      "uuid_setvar #{channel_call_uuid} cgr_suppliers ARRAY::#{suppls.size}|:#{suppls.join '|:'}"
     end
 
     def incorrect_response?(res)

@@ -34,10 +34,11 @@ describe EventProcessors::ChannelParkProcessor do
     context 'when event name is "CHANNEL_PARK"' do
       let(:event_name) { :CHANNEL_PARK }
       let(:expected_response) do
-        ["cgr_supplier=hansa", "cgr_supplier=nordconnect_eu", "cgr_supplier=speedflow_int"]
+        "uuid_setvar #{channel_call_uuid} cgr_suppliers ARRAY::3|:hansa|:nordconnect_eu|:speedflow_int"
       end
 
       context 'when event has "cgr_account" & "cgr_subject"' do
+        let(:channel_call_uuid) { '123' }
         let(:event) do
           event_struct.new({
               event_name: event_name,
@@ -46,7 +47,8 @@ describe EventProcessors::ChannelParkProcessor do
               variable_cgr_account: '1001',
               variable_cgr_subject: 'EU',
               variable_cgr_tenant: 'cgrates.org',
-              variable_cgr_reqtype: '*prepaid'
+              variable_cgr_reqtype: '*prepaid',
+              channel_call_uuid: channel_call_uuid
           })
         end
 
